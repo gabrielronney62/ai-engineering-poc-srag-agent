@@ -10,7 +10,7 @@
 - 📋 **Dashboard Qualidade DMBOK:** credenciais por canal privado
 
 > ⚠️ Os dashboards requerem login no workspace Databricks.
-> Credenciais de acesso para a banca: `poc.indicium.srag@gmail.com` — por canal privado.
+> Credenciais de acesso para a banca — por canal privado.
 
 ---
 
