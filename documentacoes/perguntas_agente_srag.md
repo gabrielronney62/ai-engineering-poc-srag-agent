@@ -5,9 +5,9 @@
 **Atualizado:** 2026-05-27
 
 **Links de acesso:**
-- 🤖 **Agente:** https://agente-srag-poc-2192137876212676.aws.databricksapps.com
-- 📊 **Dashboard Epidemiológico:** https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484823/dashboards/6401b2e1-4a0d-47ff-832f-aefd2f9d77ef?o=2192137876212676
-- 📋 **Dashboard Qualidade DMBOK:** https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484822/dashboards/7719a985-d5e2-4bd6-a8f1-52c728d03cc2?o=2192137876212676
+- 🤖 **Agente:** credenciais por canal privado
+- 📊 **Dashboard Epidemiológico:** credenciais por canal privado
+- 📋 **Dashboard Qualidade DMBOK:** credenciais por canal privado
 
 > ⚠️ Os dashboards requerem login no workspace Databricks.
 > Credenciais de acesso para a banca: `poc.indicium.srag@gmail.com` — por canal privado.
