@@ -13,8 +13,8 @@ e `seaborn` diretamente no Databricks, sem ferramentas externas de BI.
 
 | Dashboard | Notebook | Acesso |
 |---|---|---|
-| Monitoramento de SRAG | `08_dashboard_visualizacoes_srag.py` | [Abrir dashboard](https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484823/dashboards/6401b2e1-4a0d-47ff-832f-aefd2f9d77ef?o=2192137876212676) |
-| Qualidade de Dados DMBOK | `09_dashboard_qualidade_dmbok.py` | [Abrir dashboard](https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484822/dashboards/7719a985-d5e2-4bd6-a8f1-52c728d03cc2?o=2192137876212676) |
+| Monitoramento de SRAG | `08_dashboard_visualizacoes_srag.py` | credenciais por canal privado |
+| Qualidade de Dados DMBOK | `09_dashboard_qualidade_dmbok.py` | credenciais por canal privado |
 
 > ⚠️ Os links requerem login no workspace Databricks.
 > Credenciais para a banca: `poc.indicium.srag@gmail.com` — por canal privado.
@@ -27,10 +27,6 @@ e `seaborn` diretamente no Databricks, sem ferramentas externas de BI.
 **Notebook:** `dashboard/08_dashboard_visualizacoes_srag.py`  
 **Propósito:** Visão epidemiológica operacional — tendências, volumes e taxas dos casos SRAG.
 
-**Link direto:**
-```
-https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484823/dashboards/6401b2e1-4a0d-47ff-832f-aefd2f9d77ef?o=2192137876212676
-```
 
 ### Fontes de dados
 
@@ -117,10 +113,6 @@ indicando o nível de atenção (verde = estável, laranja = atenção, vermelho
 **Propósito:** Monitoramento da qualidade dos dados nas camadas Bronze e Gold,
 baseado nas 5 dimensões DMBOK avaliadas pelo notebook `02_bronze_quality_srag.py`.
 
-**Link direto:**
-```
-https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484822/dashboards/7719a985-d5e2-4bd6-a8f1-52c728d03cc2?o=2192137876212676
-```
 
 ### Fontes de dados
 
