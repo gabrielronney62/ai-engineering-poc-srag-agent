@@ -19,7 +19,7 @@ distribuídas entre as camadas Bronze e Gold. Os resultados são gravados em
 formando uma série histórica de execuções rastreada por `run_id`.
 
 **Dashboard de qualidade:**
-`https://dbc-a3683c7d-7729.cloud.databricks.com/editor/notebooks/2537046554484822/dashboards/7719a985-d5e2-4bd6-a8f1-52c728d03cc2?o=2192137876212676`
+credenciais por canal privado
 
 ---
 
