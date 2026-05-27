@@ -1,0 +1,133 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor':       '#EBF5FB',
+    'primaryTextColor':   '#1C2B36',
+    'primaryBorderColor': '#AED6F1',
+    'lineColor':          '#2E86C1',
+    'secondaryColor':     '#FDFEFE',
+    'tertiaryColor':      '#FEF9E7',
+    'background':         '#FFFFFF',
+    'mainBkg':            '#FFFFFF',
+    'nodeBorder':         '#AED6F1',
+    'clusterBkg':         '#F8FBFD',
+    'titleColor':         '#1C2B36',
+    'edgeLabelBackground':'#FFFFFF',
+    'fontFamily':         'Inter, Helvetica, Arial, sans-serif'
+  },
+  'flowchart': {'curve': 'orthogonal'}
+}}%%
+flowchart TD
+
+    USR[("👤 Usuário\nProfissional de Saúde\nou Gestor")]
+    IFACE["🖥️ Interface do Agente\nDatabricks App\nGradio"]
+    ORCH["🧠 Agente Orquestrador SRAG\nPython · w.api_client.do()\nDatabricks SDK"]
+    LLM["🤖 LLM\nDatabricks Model Serving\nMeta Llama 3.3 70B Instruct"]
+
+    subgraph TOOLS["🛠️ Tools do Agente"]
+        T1["tool_metricas\n→ KPIs consolidados"]
+        T2["tool_series_temporais\n→ Séries 30d e 12m"]
+        T3["tool_data_quality\n→ Alertas DMBOK"]
+        T4["tool_noticias\n→ Notícias em tempo real"]
+        T5["🔒 tool_guardrails_lgpd\n→ Proteção PII"]
+        T6["📝 tool_audit_logger\n→ Auditoria da execução"]
+    end
+
+    subgraph NEWS_EXT["🌐 Fontes Externas"]
+        N1["SerpAPI\nGoogle News"]
+        N2["RSS Ministério da Saúde\ngov.br"]
+    end
+
+    subgraph DATABRICKS["☁️ Databricks Unity Catalog — certificacao_indicium"]
+
+        subgraph RAW["📁 Volume Raw"]
+            CSV1["INFLUD25_DATASUS\nVersao26-06-2025.csv\n165.397 registros"]
+            CSV2["INFLUD25-2025.csv\n336.239 registros"]
+            CSV3["INFLUD26-2026.csv\n101.425 registros"]
+            CSV4["Leitos_2025.csv\n86.147 registros"]
+            CSV5["Leitos_2026.csv\n28.783 registros"]
+        end
+
+        subgraph BRONZE["🥉 Bronze — poc_srag_datasus"]
+            B1["bronze_poc_srag_datasus\nAPPEND · 194 cols STRING\nrun_id · dh_ingestao_bronze"]
+            B2["bronze_quality_poc_srag_datasus\nAPPEND · DMBOK 5 dimensões\n40 regras por run_id"]
+            B3["bronze_dados_leitos_2024_2026\ncriado pelo usuário"]
+        end
+
+        subgraph PII_VAULT["🔐 auditoria_pii — Acesso Restrito"]
+            P1["mapa_identificacao_dados_srag_datasus\nCPF · CNS · nome → SHA-256\nOVERWRITE · bloqueado ao agente"]
+        end
+
+        subgraph SILVER["🥈 Silver — poc_srag_datasus"]
+            S1["silver_poc_srag_datasus\nMERGE SCD2 · ~80 cols tipadas\nhash_caso · ~440k casos únicos"]
+            S2["silver_cnes_leitos_uti\nOVERWRITE · por estabelecimento CNES"]
+            S3["silver_cnes_leitos_uti_por_uf\nOVERWRITE · denominador UTI por UF/mês"]
+            S4["silver_ibge_estados\ncriado pelo usuário"]
+            S5["silver_ibge_municipios\ncriado pelo usuário"]
+        end
+
+        subgraph GOLD["🥇 Gold — poc_srag_datasus"]
+            GF["gold_fact_poc_srag_datasus\nOVERWRITE · 1 linha por caso\nsk_ surrogate keys"]
+            GD1["gold_dim_tempo"]
+            GD2["gold_dim_localidade"]
+            GD3["gold_dim_perfil"]
+            GD4["gold_dim_classificacao"]
+            GA1["gold_agg_metricas_diarias\nsérie 30 dias · MM7d"]
+            GA2["gold_agg_metricas_mensais\nsérie 12 meses"]
+            GA3["gold_agg_indicadores_relatorio\nKPIs prontos · entrada do agente"]
+            GQ["gold_quality_poc_srag_datasus\nAPPEND · qualidade consolidada"]
+            GN["gold_news_context_poc_srag_datasus\nAPPEND · histórico de notícias"]
+            GAU["gold_audit_agent_poc_srag_datasus\nAPPEND · auditoria do agente"]
+        end
+
+    end
+
+    subgraph OUTPUT["📊 Saídas"]
+        DASH1["📊 Dashboard Epidemiológico\nNotebook 08 · 6 gráficos\nmatplotlib + seaborn"]
+        DASH2["📊 Dashboard Qualidade DMBOK\nNotebook 09 · 7 gráficos\nSemáforo + Radar"]
+    end
+
+    USR -->|"Pergunta epidemiológica"| IFACE
+    IFACE --> ORCH
+    ORCH <-->|"Tool calls + LLM reasoning"| LLM
+    ORCH --> T1 & T2 & T3 & T4 & T5 & T6
+
+    T1 --> GA3
+    T2 --> GA1 & GA2
+    T3 --> GQ
+    T4 --> N1 & N2
+    T4 -->|"Gravar notícias"| GN
+    T5 -->|"Validar input e output"| ORCH
+    T6 --> GAU
+
+    GA1 & GA2 & GA3 --> DASH1
+    GQ --> DASH2
+
+    CSV1 & CSV2 & CSV3 -->|"Notebook 01\nAuto Loader"| B1
+    B1 -->|"Notebook 02\nDMBOK"| B2
+    B1 -->|"Notebook 03\nSCD2 + PII"| S1
+    B1 -->|"Extrair PII"| P1
+    CSV4 & CSV5 -->|"Upload manual"| B3
+    B3 -->|"Notebook 03b\nSnake_case + tipagem"| S2
+    S2 -->|"Agregar UF/mês"| S3
+
+    S1 & S3 & S4 & S5 -->|"gold/dim/ + gold/fact/\nStar Schema"| GF
+    GF --- GD1 & GD2 & GD3 & GD4
+    GF -->|"gold/agg/"| GA1 & GA2 & GA3
+    GA1 & GA2 & GA3 -->|"gold_quality_srag.py\nQualidade Gold"| GQ
+
+    style RAW        fill:#FEF9E7,color:#1C2B36,stroke:#F0B27A
+    style BRONZE     fill:#FDEBD0,color:#1C2B36,stroke:#E59866
+    style PII_VAULT  fill:#FADBD8,color:#1C2B36,stroke:#E74C3C
+    style P1         fill:#FADBD8,color:#7B241C,stroke:#C0392B
+    style SILVER     fill:#EBF5FB,color:#1C2B36,stroke:#5DADE2
+    style GOLD       fill:#FEF9E7,color:#1C2B36,stroke:#F4D03F
+    style TOOLS      fill:#F4ECF7,color:#1C2B36,stroke:#A569BD
+    style NEWS_EXT   fill:#E8F8F5,color:#1C2B36,stroke:#48C9B0
+    style DATABRICKS fill:#FDFEFE,color:#1C2B36,stroke:#AED6F1
+    style OUTPUT     fill:#EBF5FB,color:#1C2B36,stroke:#5DADE2
+
+    style ORCH fill:#2E86C1,color:#fff,stroke:#1A5276
+    style LLM  fill:#7D3C98,color:#fff,stroke:#512E5F
+    style T5   fill:#C0392B,color:#fff,stroke:#922B21
+    style T3   fill:#1E8449,color:#fff,stroke:#145A32

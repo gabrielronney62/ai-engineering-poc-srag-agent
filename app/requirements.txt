@@ -1,0 +1,6 @@
+gradio>=4.0.0
+feedparser
+requests
+mlflow
+databricks-sdk
+databricks-connect
