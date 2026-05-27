@@ -314,7 +314,7 @@ Para os detalhes da decisão arquitetural, ver `documentacoes/decisao_arquitetur
 | 🤖 Agente Epidemiológico | credenciais por canal privado |
 | 📊 Dashboard Monitoramento SRAG | credenciais por canal privado |
 | 📋 Dashboard Qualidade DMBOK | credenciais por canal privado |
-| 🗂️ Workspace Databricks | `poc.indicium.srag@gmail.com` — credenciais por canal privado |
+| 🗂️ Workspace Databricks | credenciais por canal privado |
 | 📁 Tabelas Silver | Somente leitura — schema `poc_srag_datasus` |
 | 📁 Tabelas Gold | Somente leitura — schema `poc_srag_datasus` |
 | 🔐 Cofre PII | Bloqueado — schema `auditoria_pii` (LGPD) |
