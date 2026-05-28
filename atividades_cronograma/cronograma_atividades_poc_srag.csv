@@ -1,0 +1,25 @@
+Atividade;Status;Data de Início;Data de Término;Tempo Estimado (h);Prioridade;Descrição
+Análise e entendimento do briefing;Concluído;30/04/2026;30/04/2026;2;Alta;Leitura do briefing e dicionário de dados SIVEP-Gripe. Definição do escopo e levantamento de questões técnicas.
+Setup do ambiente Databricks;Concluído;30/04/2026;30/04/2026;3;Alta;Criação do catálogo e schema no Unity Catalog. Configuração do cluster e permissões iniciais.
+Ingestão Bronze — Auto Loader SRAG;Concluído;30/04/2026;01/05/2026;4;Alta;Notebook 01: ingestão dos 3 CSVs SIVEP-Gripe via Auto Loader. Normalização de colunas para snake_case. Adição de run_id e dh_ingestao_bronze.
+Qualidade Bronze — DMBOK 5 dimensões;Concluído;01/05/2026;03/05/2026;6;Alta;Notebook 02: 40 regras de qualidade (Completude/Validade/Consistência/Unicidade/Atualidade). Thresholds de severidade e rastreamento por run_id.
+Tratamento Silver — SCD2 + Pseudoanonimização LGPD;Concluído;03/05/2026;07/05/2026;10;Alta;Notebook 03: tipagem de 194 colunas. 17 flags epidemiológicas derivadas. MERGE SCD Tipo 2. SHA-256 + cofre auditoria_pii.
+Ingestão Silver — Leitos CNES;Concluído;06/05/2026;07/05/2026;4;Média;Notebook 03b: normalização dos CSVs de leitos UTI 2025/2026. Agregação por UF/mês para denominador real da taxa de UTI.
+Modelagem Gold — Star Schema;Concluído;07/05/2026;10/05/2026;8;Alta;Notebook 04: 4 dimensões (tempo/localidade/perfil/classificação) + tabela fato + surrogate keys SHA-256.
+Agregações Gold — Séries e KPIs;Concluído;10/05/2026;12/05/2026;6;Alta;gold_agg_metricas_diarias (30d + MM7d) + gold_agg_metricas_mensais (12m) + gold_agg_indicadores_relatorio.
+Qualidade Gold — Acurácia das métricas;Concluído;12/05/2026;13/05/2026;3;Média;gold_quality_srag.py: validação de sanidade das 4 métricas principais (mortalidade/UTI/vacinação/aumento).
+Desenvolvimento do Agente — Tools + LLM;Concluído;13/05/2026;17/05/2026;12;Alta;Notebook 07 + app.py: 6 tools (métricas/séries/qualidade/notícias/guardrails/audit). Meta Llama 3.3 70B via w.api_client.do().
+Integração RSS + SerpAPI;Concluído;15/05/2026;17/05/2026;4;Média;Busca de notícias via RSS gov.br e Google News (SerpAPI). Gravação histórica em gold_news_context.
+Implementação de 9 Guardrails LGPD;Concluído;16/05/2026;18/05/2026;4;Alta;Guardrails de entrada e saída: bloqueio de PII/identificação individual + correção de linguagem + estrutura obrigatória.
+Audit Log automático do agente;Concluído;17/05/2026;18/05/2026;2;Alta;Gravação de toda interação em gold_audit_agent: pergunta/resposta/tools/guardrails/run_id.
+Deploy Databricks App + Gradio;Concluído;18/05/2026;20/05/2026;6;Alta;app.py com Gradio. Configuração de secrets (SerpAPI/salt_pii) via Databricks Secrets. Permissões OAuth para SP do App.
+Dashboard Epidemiológico (Notebook 08);Concluído;20/05/2026;22/05/2026;5;Média;6 gráficos: painel KPIs / casos diários+MM7d / casos mensais / mortalidade diária / agente etiológico / heatmap UF.
+Dashboard Qualidade DMBOK (Notebook 09);Concluído;21/05/2026;23/05/2026;5;Média;7 gráficos: semáforo Bronze e Gold / completude / validade / consistência / radar DMBOK / evolução histórica.
+Documentação técnica — 11 documentos;Concluído;22/05/2026;26/05/2026;10;Média;README + arquitetura PDF + caso de uso + dashboards + governança LGPD + qualidade DMBOK + limitações + ADRs + mapeamentos + dicionário + guia do agente.
+Diagrama de arquitetura conceitual (PDF);Concluído;24/05/2026;25/05/2026;3;Média;arquitetura_conceitual.mmd + arquitetura_conceitual.pdf. Agente/Tools/LLM/Pipeline/Fontes externas.
+Apresentação para equipe (PPTX);Concluído;25/05/2026;26/05/2026;4;Baixa;10 slides: capa / problema / solução / dados / agente em ação / qualidade+LGPD / métricas / stack / lições / encerramento.
+Relatório de checklist de requisitos;Concluído;26/05/2026;26/05/2026;1;Baixa;Verificação formal dos 6 requisitos do briefing (4 métricas + 2 gráficos) com evidências no código.
+Relatório — além do briefing;Concluído;26/05/2026;27/05/2026;2;Baixa;15 itens documentados que foram além do escopo solicitado com justificativas técnicas.
+Revisão de segurança — remoção de dados sensíveis;Concluído;27/05/2026;27/05/2026;2;Alta;SALT_PII movido para Databricks Secrets. URL do workspace substituída por variável. Salt removido da documentação.
+Publicação no GitHub;Concluído;27/05/2026;28/05/2026;2;Alta;Push inicial do repositório indicium-ai-eng-poc-srag com .gitignore adequado (*.csv excluído).
+Entrega final à banca;Concluído;28/05/2026;28/05/2026;1;Alta;Envio por e-mail com link do GitHub e instruções de acesso. Credenciais enviadas por canal privado.
